@@ -110,7 +110,7 @@ public class LinkedListST<Key extends Comparable<Key>, Value> {
      * or null if no such key in a node.
      */
     private Node findNode(Key key) {
-        if (!contains(key) || isEmpty()) return null;
+        if (!contains(key)) return null;
         Node t = new Node();
         t.next = root;
         while (t.next.next != null && t.next.next.key.compareTo(key) <= 0) {
@@ -165,7 +165,8 @@ public class LinkedListST<Key extends Comparable<Key>, Value> {
                 root = newNode;
             }
             else {
-                Node t = findNode(floor(key)).next;
+                Key before = (floor(key) == null) ? root.key : floor(key);
+                Node t = findNode(before).next;
                 newNode.next = t.next;
                 t.next = newNode;
             }
@@ -255,7 +256,12 @@ public class LinkedListST<Key extends Comparable<Key>, Value> {
         while (t.next != null && t.next.key.compareTo(key) < 0) {
             t = t.next;
         }
-        return t.key;
+        if (t.key.compareTo(key) > 0) {
+            return null;
+        }
+        else {
+            return t.key;
+        }
     }
 
     /* Returns the smallest key that is
